@@ -1,0 +1,36 @@
+.history-list {
+    display: grid;
+    gap: 14px;
+}
+
+.history-row {
+    display: grid;
+    grid-template-columns: minmax(0, 1fr) 100px auto;
+    gap: 18px;
+    align-items: center;
+    padding: 20px;
+    border: 1px solid var(--line);
+    border-radius: 8px;
+    background: var(--surface);
+    box-shadow: var(--shadow);
+}
+
+.history-row h2 {
+    margin-bottom: 6px;
+    font-size: 22px;
+}
+
+.history-row p {
+    margin: 0;
+}
+
+.history-row strong {
+    color: var(--primary);
+    font-size: 28px;
+}
+
+@media (max-width: 700px) {
+    .history-row {
+        grid-template-columns: 1fr;
+    }
+}

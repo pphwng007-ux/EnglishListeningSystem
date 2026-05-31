@@ -1,0 +1,69 @@
+{% extends "base.html" %}
+
+{% block title %}Dashboard | English Listening{% endblock %}
+
+{% block styles %}
+<link rel="stylesheet" href="{{ url_for('static', filename='css/dashboard.css') }}">
+{% endblock %}
+
+{% block content %}
+<section class="dashboard-hero">
+    <div>
+        <p class="eyebrow">Listening practice</p>
+        <h1>Luyen nghe tieng Anh moi ngay</h1>
+        <p class="hero-copy">
+            Chon bai nghe, nghe audio, tra loi cau hoi va xem diem ngay sau khi nop bai.
+        </p>
+        <div class="hero-actions">
+            <a class="button primary" href="{{ url_for('lessons') }}">Chon bai nghe</a>
+            <a class="button secondary" href="{{ url_for('history') }}">Xem lich su</a>
+        </div>
+    </div>
+    <div class="hero-panel">
+        <span class="panel-label">Tien do</span>
+        <strong>{{ stats.completed }}/{{ stats.total_lessons }}</strong>
+        <span>bai da luyen</span>
+    </div>
+</section>
+
+<section class="stats-grid" aria-label="Thong ke hoc tap">
+    <article>
+        <span>Tong bai</span>
+        <strong>{{ stats.total_lessons }}</strong>
+    </article>
+    <article>
+        <span>Da luyen</span>
+        <strong>{{ stats.completed }}</strong>
+    </article>
+    <article>
+        <span>Diem cao nhat</span>
+        <strong>{{ stats.best_score }}%</strong>
+    </article>
+    <article>
+        <span>Diem trung binh</span>
+        <strong>{{ stats.average_score }}%</strong>
+    </article>
+</section>
+
+<section class="section-head">
+    <div>
+        <p class="eyebrow">Bat dau nhanh</p>
+        <h2>Bai nghe de xuat</h2>
+    </div>
+    <a class="text-link" href="{{ url_for('lessons') }}">Tat ca bai nghe</a>
+</section>
+
+<section class="lesson-grid">
+    {% for lesson in lessons %}
+    <article class="lesson-card">
+        <div class="lesson-meta">
+            <span>{{ lesson.level }}</span>
+            <span>{{ lesson.duration }}</span>
+        </div>
+        <h3>{{ lesson.title }}</h3>
+        <p>{{ lesson.description }}</p>
+        <a class="button small" href="{{ url_for('practice', lesson_id=lesson.id) }}">Luyen bai nay</a>
+    </article>
+    {% endfor %}
+</section>
+{% endblock %}

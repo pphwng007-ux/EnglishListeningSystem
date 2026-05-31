@@ -1,0 +1,36 @@
+{% extends "base.html" %}
+
+{% block title %}Lich su | English Listening{% endblock %}
+
+{% block styles %}
+<link rel="stylesheet" href="{{ url_for('static', filename='css/history.css') }}">
+{% endblock %}
+
+{% block content %}
+<section class="page-title">
+    <p class="eyebrow">Practice history</p>
+    <h1>Lich su luyen nghe</h1>
+    <p>Cac ket qua duoc luu trong session cua trinh duyet khi ban nop bai.</p>
+</section>
+
+{% if history %}
+<section class="history-list">
+    {% for item in history %}
+    <article class="history-row">
+        <div>
+            <h2>{{ item.lesson_title }}</h2>
+            <p>{{ item.created_at }} - dung {{ item.correct }}/{{ item.total }} cau</p>
+        </div>
+        <strong>{{ item.score }}%</strong>
+        <a class="button secondary" href="{{ url_for('practice', lesson_id=item.lesson_id) }}">Luyen lai</a>
+    </article>
+    {% endfor %}
+</section>
+{% else %}
+<section class="empty-state">
+    <h2>Chua co ket qua</h2>
+    <p>Hay chon mot bai nghe va nop bai de tao lich su hoc tap.</p>
+    <a class="button primary" href="{{ url_for('lessons') }}">Chon bai nghe</a>
+</section>
+{% endif %}
+{% endblock %}

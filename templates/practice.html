@@ -1,0 +1,65 @@
+{% extends "base.html" %}
+
+{% block title %}{{ lesson.title }} | Practice{% endblock %}
+
+{% block styles %}
+<link rel="stylesheet" href="{{ url_for('static', filename='css/practice.css') }}">
+{% endblock %}
+
+{% block content %}
+<section class="practice-layout">
+    <aside class="listen-panel">
+        <div class="lesson-meta">
+            <span>{{ lesson.level }}</span>
+            <span>{{ lesson.duration }}</span>
+        </div>
+        <h1>{{ lesson.title }}</h1>
+        <p>{{ lesson.description }}</p>
+
+        <audio class="audio-player" controls preload="metadata">
+            <source src="{{ url_for('static', filename=lesson.audio) }}" type="audio/mpeg">
+            Trinh duyet cua ban khong ho tro phat audio.
+        </audio>
+
+        <div class="practice-tools">
+            <button class="tool-button" type="button" data-replay>Nghe lai</button>
+            <button class="tool-button" type="button" data-toggle-transcript>Hien transcript</button>
+        </div>
+
+        <div class="transcript" hidden>
+            <h2>Transcript</h2>
+            <p>{{ lesson.transcript }}</p>
+        </div>
+    </aside>
+
+    <section class="question-panel">
+        <div class="question-head">
+            <p class="eyebrow">Question set</p>
+            <h2>Tra loi cau hoi</h2>
+        </div>
+
+        <form method="post" action="{{ url_for('submit', lesson_id=lesson.id) }}" data-practice-form>
+            {% for question in lesson.questions %}
+            <fieldset class="question-card">
+                <legend>{{ loop.index }}. {{ question.text }}</legend>
+                {% for option in question.options %}
+                <label class="option">
+                    <input type="radio" name="{{ question.id }}" value="{{ option }}">
+                    <span>{{ option }}</span>
+                </label>
+                {% endfor %}
+            </fieldset>
+            {% endfor %}
+
+            <div class="submit-row">
+                <a class="button secondary" href="{{ url_for('lessons') }}">Doi bai</a>
+                <button class="button primary" type="submit">Nop bai</button>
+            </div>
+        </form>
+    </section>
+</section>
+{% endblock %}
+
+{% block scripts %}
+<script src="{{ url_for('static', filename='js/practice.js') }}"></script>
+{% endblock %}
