@@ -1,0 +1,80 @@
+<!DOCTYPE html>
+<html lang="vi">
+<head>
+    <meta charset="UTF-8">
+    <meta name="viewport" content="width=device-width, initial-scale=1.0">
+    <title>Nhật ký & Đồ thị tiến trình rèn luyện</title>
+    <script src="https://cdn.tailwindcss.com"></script>
+    <script src="https://cdn.jsdelivr.net/npm/chart.js"></script>
+    <link rel="stylesheet" href="{{ url_for('static', filename='css/style.css') }}">
+</head>
+<body class="bg-slate-50 text-slate-800 font-sans">
+    <div class="max-w-5xl mx-auto px-4 py-10">
+        
+        <div class="mb-6">
+            <a href="/" class="inline-flex items-center text-sm font-semibold text-blue-600 hover:text-blue-800 transition">
+                <span class="mr-1">←</span> Quay lại trang chủ bài học
+            </a>
+        </div>
+
+        <h1 class="text-3xl font-black text-slate-900 tracking-tight mb-2">BÁO CÁO TIẾN ĐỘ HỌC TẬP</h1>
+        <p class="text-sm text-slate-500 mb-8">Hệ thống tổng hợp dữ liệu lịch sử, phân tích mối tương quan giữa độ chính xác từ vựng và thời gian phản xạ.</p>
+
+        <div class="bg-white p-5 md:p-6 rounded-2xl shadow-sm border border-slate-200/60 mb-10">
+            <h3 class="font-bold text-slate-800 mb-4 flex items-center space-x-2 text-base">
+                <span>📈</span>
+                <span>Đồ thị phân tích hiệu suất học tập kép</span>
+            </h3>
+            <div class="relative h-80 w-full">
+                <canvas id="progressChart"></canvas>
+            </div>
+        </div>
+
+        <div class="bg-white rounded-2xl shadow-sm border border-slate-200/60 overflow-hidden">
+            <div class="p-5 border-b border-slate-100 bg-slate-50/50">
+                <h3 class="font-bold text-slate-800 text-sm uppercase tracking-wider text-slate-500">Nhật ký làm bài chi tiết</h3>
+            </div>
+            
+            <div class="overflow-x-auto">
+                <table class="w-full text-left border-collapse">
+                    <thead>
+                        <tr class="bg-slate-50/70 text-slate-400 text-[11px] font-black tracking-wider uppercase border-b border-slate-100">
+                            <th class="p-4">Thời gian hoàn thành</th>
+                            <th class="p-4">Tên bài học</th>
+                            <th class="p-4">Cấp độ</th>
+                            <th class="p-4 text-center">Độ chính xác</th>
+                            <th class="p-4 text-center">Điểm số thu được</th>
+                        </tr>
+                    </thead>
+                    <tbody class="divide-y divide-slate-100 text-sm">
+                        {% for att in attempts %}
+                        <tr class="hover:bg-slate-50/80 transition-all">
+                            <td class="p-4 font-mono text-xs text-slate-500">{{ att.finished_at.strftime('%d/%m/%Y %H:%M') if att.finished_at else 'Chưa xong' }}</td>
+                            <td class="p-4 font-bold text-slate-800">{{ att.lesson.title }}</td>
+                            <td class="p-4">
+                                <span class="text-[10px] font-bold px-2 py-0.5 rounded-full
+                                    {% if att.lesson.level == 1 %} bg-emerald-50 text-emerald-700
+                                    {% elif att.lesson.level == 2 %} bg-amber-50 text-amber-700
+                                    {% else %} bg-rose-50 text-rose-700 {% endif %}">
+                                    {{ att.lesson.level_label }}
+                                </span>
+                            </td>
+                            <td class="p-4 text-center text-emerald-600 font-bold font-mono">{{ att.accuracy }}%</td>
+                            <td class="p-4 text-center text-blue-600 font-black font-mono text-base">{{ att.score }}</td>
+                        </tr>
+                        {% else %}
+                        <tr>
+                            <td colspan="5" class="p-10 text-center text-slate-400 bg-slate-50/50 italic text-sm">
+                                Bạn chưa thực hiện lượt làm bài nào. Hãy chọn một bài nghe ở trang chủ để bắt đầu!
+                            </td>
+                        </tr>
+                        {% endfor %}
+                    </tbody>
+                </table>
+            </div>
+        </div>
+    </div>
+
+    <script src="{{ url_for('static', filename='js/chart.js') }}"></script>
+</body>
+</html>
